@@ -1,3 +1,4 @@
+using App.Core.Entities;
 using App.DataAccess.Contexts;
 using App.DataAccess.Repositories.Implementations;
 using App.DataAccess.Repositories.Interfaces;
@@ -6,6 +7,7 @@ using AppBusiness.Validations.TeamMembers;
 using AppBusiness.ViewModels.Auth;
 using AppBusiness.ViewModels.TeamMemberrs;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -15,10 +17,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 var conString = builder.Configuration["ConnectionStrings:default"];
 builder.Services.AddDbContext<AppDbContex>(opt=>opt.UseSqlServer(conString));
+builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContex>().AddDefaultTokenProviders()   ;
 builder.Services.AddScoped<ITeamMemberRepository, TeamMemberRepository>();
 builder.Services.AddScoped<IValidator<UpdateTeamMemberVm>, UpdateTeamMemberValidator>();
 builder.Services.AddScoped<IValidator<LoginTeamViewModel>, LoginValidator>();
 builder.Services.AddScoped<IValidator<RegisterTeamViewModel>,RegisterValidator>();
+
 
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateTeamMemberValidator>();
 var app = builder.Build();

@@ -31,7 +31,7 @@ namespace AppBusiness.Validations.Auth
             RuleFor(x => x.ConfirmedPassword)
                   .NotEmpty()
                   .NotNull()
-                  .Equal(x => x.Password);
+                  .Equal(x => x.Password).WithMessage("Confirmed Password and Password must be same");
 
 
 
